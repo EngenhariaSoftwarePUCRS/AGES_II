@@ -1,0 +1,92 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  userId Int    @id @default(autoincrement())
+  name   String
+  email  String @unique @db.VarChar(120)
+  cpf    String @unique @db.Char(11)
+
+  userTypeId Int
+  userType   UserType @relation(fields: [userTypeId], references: [userTypeId])
+
+  walletId Int     @unique
+  wallet   Wallet?
+
+  redeem               Redeem[]
+  sentTransactions     Transaction[] @relation("sender")
+  receivedTransactions Transaction[] @relation("receiver")
+}
+
+model UserType {
+  userTypeId  Int    @id @default(autoincrement())
+  name        String
+  description String
+
+  users User[]
+}
+
+model Wallet {
+  walletId        Int   @id @default(autoincrement())
+  claps           Int
+  coins           Int
+  walletLimit     Int
+  limitMultiplier Float
+
+  userId Int  @unique
+  users  User @relation(fields: [userId], references: [userId])
+}
+
+model Transaction {
+  transactionId Int @id @default(autoincrement())
+
+  senderId Int
+  sender   User @relation(name: "sender", fields: [senderId], references: [userId])
+
+  receiverId Int
+  receiver   User @relation(name: "receiver", fields: [receiverId], references: [userId])
+
+  feedbackId Int      @unique
+  feedback   Feedback @relation(fields: [feedbackId], references: [feedbackId])
+
+  value Float
+  date  DateTime
+}
+
+model Feedback {
+  feedbackId Int     @id @default(autoincrement())
+  message    String? @db.VarChar(300)
+  visibility Boolean @default(false)
+
+  Transaction Transaction?
+}
+
+model Redeem {
+  redeemId Int      @id @default(autoincrement())
+  price    Int
+  datetime DateTime
+
+  userId Int
+  user   User @relation(fields: [userId], references: [userId])
+
+  itemId Int
+  item   Item @relation(fields: [itemId], references: [itemId])
+}
+
+model Item {
+  itemId      Int      @id @default(autoincrement())
+  name        String   @db.VarChar(120)
+  description String   @db.VarChar(1000)
+  price       Int
+  image       String
+  updatedAt   DateTime @updatedAt
+  available   Boolean
+
+  redeem Redeem[]
+}
