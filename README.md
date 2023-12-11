@@ -1,6 +1,6 @@
 | Disciplina | Professora | Semestre Previsto | Ano Cursada | Grau Obtido | CodiCred | Carga Horária |
 | --- | --- | --- | --- | --- | --- | --- |
-| Prática na AGES II | [Alessandra Dutra](https://www.linkedin.com/in/alessandra-smolenaars-dutra/) | 4º | 2023/2 |  | 46523-04 | 120 |
+| Prática na AGES II | [Alessandra Dutra](https://www.linkedin.com/in/alessandra-smolenaars-dutra/) | 4º | 2023/2 | 10.0 | 46523-04 | 120 |
 
 ## Links Úteis
 
